@@ -89,10 +89,22 @@ resource "aws_api_gateway_integration" "proxy" {
   	connection_id   = aws_api_gateway_vpc_link.main.id
 }
 
-resource "aws_api_gateway_resource" "customer" {
+resource "aws_api_gateway_resource" "menuguru" {
   	rest_api_id = aws_api_gateway_rest_api.main.id
   	parent_id   = aws_api_gateway_rest_api.main.root_resource_id
-  	path_part   = "menuguru/v1/customer"
+  	path_part   = "menuguru"
+}
+
+resource "aws_api_gateway_resource" "v1" {
+  	rest_api_id = aws_api_gateway_rest_api.main.id
+  	parent_id   = aws_api_gateway_rest_api.menuguru.root_resource_id
+  	path_part   = "menuguru"
+}
+
+resource "aws_api_gateway_resource" "v1" {
+  	rest_api_id = aws_api_gateway_rest_api.main.id
+  	parent_id   = aws_api_gateway_rest_api.v1.root_resource_id
+  	path_part   = "customers"
 }
 
 resource "aws_api_gateway_method" "customer_post" {
