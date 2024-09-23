@@ -101,7 +101,7 @@ resource "aws_api_gateway_resource" "v1" {
   	path_part   = "menuguru"
 }
 
-resource "aws_api_gateway_resource" "v1" {
+resource "aws_api_gateway_resource" "customers" {
   	rest_api_id = aws_api_gateway_rest_api.main.id
   	parent_id   = aws_api_gateway_rest_api.v1.root_resource_id
   	path_part   = "customers"
