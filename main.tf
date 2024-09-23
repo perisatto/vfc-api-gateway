@@ -96,15 +96,14 @@ resource "aws_api_gateway_resource" "menuguru" {
   	
   	resource "aws_api_gateway_resource" "v1" {
   		rest_api_id = aws_api_gateway_rest_api.main.id
-  		parent_id   = aws_api_gateway_rest_api.menuguru.root_resource_id
+  		parent_id   = aws_api_gateway_rest_api.menuguru.id
   		path_part   = "v1"
   		
 		resource "aws_api_gateway_resource" "customers" {
 		  	rest_api_id = aws_api_gateway_rest_api.main.id
-		  	parent_id   = aws_api_gateway_rest_api.v1.root_resource_id
+		  	parent_id   = aws_api_gateway_rest_api.v1.id
 		  	path_part   = "customers"
-		}
-  		
+		}  		
 	}  	
 }
 
