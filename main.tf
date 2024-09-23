@@ -93,18 +93,19 @@ resource "aws_api_gateway_resource" "menuguru" {
   	rest_api_id = aws_api_gateway_rest_api.main.id
   	parent_id   = aws_api_gateway_rest_api.main.root_resource_id
   	path_part   = "menuguru"
-}
-
-resource "aws_api_gateway_resource" "v1" {
-  	rest_api_id = aws_api_gateway_rest_api.main.id
-  	parent_id   = aws_api_gateway_rest_api.menuguru.root_resource_id
-  	path_part   = "menuguru"
-}
-
-resource "aws_api_gateway_resource" "customers" {
-  	rest_api_id = aws_api_gateway_rest_api.main.id
-  	parent_id   = aws_api_gateway_rest_api.v1.root_resource_id
-  	path_part   = "customers"
+  	
+  	resource "aws_api_gateway_resource" "v1" {
+  		rest_api_id = aws_api_gateway_rest_api.main.id
+  		parent_id   = aws_api_gateway_rest_api.menuguru.root_resource_id
+  		path_part   = "v1"
+  		
+		resource "aws_api_gateway_resource" "customers" {
+		  	rest_api_id = aws_api_gateway_rest_api.main.id
+		  	parent_id   = aws_api_gateway_rest_api.v1.root_resource_id
+		  	path_part   = "customers"
+		}
+  		
+	}  	
 }
 
 resource "aws_api_gateway_method" "customer_post" {
