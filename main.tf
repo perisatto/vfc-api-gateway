@@ -88,3 +88,40 @@ resource "aws_api_gateway_integration" "proxy" {
   	connection_type = "VPC_LINK"
   	connection_id   = aws_api_gateway_vpc_link.main.id
 }
+
+resource "aws_api_gateway_resource" "customer" {
+  	rest_api_id = aws_api_gateway_rest_api.main.id
+  	parent_id   = aws_api_gateway_rest_api.main.root_resource_id
+  	path_part   = "/customer"
+}
+
+resource "aws_api_gateway_method" "customer_post" {
+  	rest_api_id   = aws_api_gateway_rest_api.main.id
+  	resource_id   = aws_api_gateway_resource.proxy.id
+  	http_method   = "POST"
+  	authorization = "NONE"
+
+  	request_parameters = {
+    	"method.request.path.proxy"  = true
+  }
+}
+
+resource "aws_api_gateway_integration" "customer_post" {
+  	rest_api_id = aws_api_gateway_rest_api.main.id
+  	resource_id = aws_api_gateway_resource.customer.id
+  	http_method = "POST"
+
+  	integration_http_method = "POST"
+  	type                    = "HTTP_PROXY"
+  	uri                     = "http://${var.LOAD_BALANCER_DNS}/{proxy}"
+  	passthrough_behavior    = "WHEN_NO_MATCH"
+  	content_handling        = "CONVERT_TO_TEXT"
+
+  	request_parameters = {
+	    "integration.request.path.proxy"           = "method.request.path.proxy"
+    	"integration.request.header.Accept"        = "'application/json'"
+  	}
+
+  	connection_type = "VPC_LINK"
+  	connection_id   = aws_api_gateway_vpc_link.main.id
+}
