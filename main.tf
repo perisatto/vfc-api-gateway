@@ -23,18 +23,30 @@ variable "LOAD_BALANCER_DNS" {
   sensitive = true
 }
 
+variable "AWS_COGNITO_ARN" {
+  type = string
+  sensitive = true
+}
+
 resource "aws_api_gateway_vpc_link" "main" {
-	name = "foobar_gateway_vpclink"
- 	description = "Foobar Gateway VPC Link. Managed by Terraform."
+	name = "menuguru-vpc-link"
  	target_arns = [var.LOAD_BALANCER_ARN]
 }
 
 resource "aws_api_gateway_rest_api" "main" {
-	name = "foobar_gateway"
- 	description = "Foobar Gateway used for EKS. Managed by Terraform."
+	name = "menuguru_api"
  	endpoint_configuration {
    		types = ["REGIONAL"]
  }
+}
+
+resource "aws_api_gateway_authorizer" "menuguru_cognito" {
+  name                   = "menuguru_cognito"
+  rest_api_id            = aws_api_gateway_rest_api.main.id
+  authorizer_uri         = "${var.AWS_COGNITO_ARN}"
+  identity_source        = "method.request.header.Authorization"
+  provider_arns          = [var.AWS_COGNITO_ARN]
+  type                   = "COGNITO_USER_POOLS"
 }
 
 resource "aws_api_gateway_resource" "proxy" {
@@ -47,7 +59,8 @@ resource "aws_api_gateway_method" "proxy" {
   	rest_api_id   = aws_api_gateway_rest_api.main.id
   	resource_id   = aws_api_gateway_resource.proxy.id
   	http_method   = "ANY"
-  	authorization = "NONE"
+  	authorization = "COGNITO_USER_POOLS"
+  	authorizer_id = aws_api_gateway_authorizer.menuguru_cognito.id
 
   	request_parameters = {
     	"method.request.path.proxy"           = true

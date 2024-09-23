@@ -36,6 +36,7 @@ jobs:
         env:
           TF_VAR_LOAD_BALANCER_ARN: '"${{secrets.TF_VAR_LOAD_BALANCER_ARN}}"'
           TF_VAR_LOAD_BALANCER_DNS: '"${{secrets.TF_VAR_LOAD_BALANCER_DNS}}"'         
+          TF_VAR_AWS_COGNITO_ARN: '${{ secrets.AWS_COGNITO_ARN }}'
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
