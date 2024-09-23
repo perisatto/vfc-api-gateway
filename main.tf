@@ -96,12 +96,12 @@ resource "aws_api_gateway_resource" "menuguru" {
   	
   	resource "aws_api_gateway_resource" "v1" {
   		rest_api_id = aws_api_gateway_rest_api.main.id
-  		parent_id   = aws_api_gateway_rest_api.menuguru.id
+  		parent_id   = aws_api_gateway_resource.menuguru.id
   		path_part   = "v1"
   		
 		resource "aws_api_gateway_resource" "customers" {
 		  	rest_api_id = aws_api_gateway_rest_api.main.id
-		  	parent_id   = aws_api_gateway_rest_api.v1.id
+		  	parent_id   = aws_api_gateway_resource.v1.id
 		  	path_part   = "customers"
 		}  		
 	}  	
@@ -120,7 +120,7 @@ resource "aws_api_gateway_method" "customer_post" {
 
 resource "aws_api_gateway_integration" "customer_post" {
   	rest_api_id = aws_api_gateway_rest_api.main.id
-  	resource_id = aws_api_gateway_resource.customer.id
+  	resource_id = aws_api_gateway_resource.customers.id
   	http_method = "POST"
 
   	integration_http_method = "POST"
