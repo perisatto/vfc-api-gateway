@@ -176,7 +176,7 @@ resource "aws_api_gateway_integration" "confirmPayment_post" {
 
   	integration_http_method = "POST"
   	type                    = "HTTP_PROXY"
-  	uri                     = "http://${var.LOAD_BALANCER_DNS}/menuguru/v1/customers"
+  	uri                     = "http://${var.LOAD_BALANCER_DNS}/menuguru/v1/orders/{proxy}/confirmPayment"
   	passthrough_behavior    = "WHEN_NO_MATCH"
   	content_handling        = "CONVERT_TO_TEXT"
 
