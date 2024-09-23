@@ -126,7 +126,57 @@ resource "aws_api_gateway_integration" "customer_post" {
 
   	integration_http_method = "POST"
   	type                    = "HTTP_PROXY"
-  	uri                     = "http://${var.LOAD_BALANCER_DNS}/{proxy}"
+  	uri                     = "http://${var.LOAD_BALANCER_DNS}/menuguru/v1/customers"
+  	passthrough_behavior    = "WHEN_NO_MATCH"
+  	content_handling        = "CONVERT_TO_TEXT"
+
+  	request_parameters = {
+	    "integration.request.path.proxy"           = "method.request.path.proxy"
+    	"integration.request.header.Accept"        = "'application/json'"
+  	}
+
+  	connection_type = "VPC_LINK"
+  	connection_id   = aws_api_gateway_vpc_link.main.id
+}
+
+resource "aws_api_gateway_resource" "confirm_pay" {
+  	rest_api_id = aws_api_gateway_rest_api.main.id
+  	parent_id   = aws_api_gateway_resource.v1.id
+  	path_part   = "orders"
+}	
+
+
+resource "aws_api_gateway_resource" "order_id" {
+  	rest_api_id = aws_api_gateway_rest_api.main.id
+  	parent_id   = aws_api_gateway_resource.confirm_pay.id
+  	path_part   = "{proxy}"
+}	
+ 
+resource "aws_api_gateway_resource" "confirmPayment" {
+  	rest_api_id = aws_api_gateway_rest_api.main.id
+  	parent_id   = aws_api_gateway_resource.order_id.id
+  	path_part   = "confirmPayment"
+}	
+
+resource "aws_api_gateway_method" "confirmPayment_post" {
+  	rest_api_id   = aws_api_gateway_rest_api.main.id
+  	resource_id   = aws_api_gateway_resource.confirmPayment.id
+  	http_method   = "POST"
+  	authorization = "NONE"
+
+  	request_parameters = {
+    	"method.request.path.proxy"  = true
+  }
+}
+
+resource "aws_api_gateway_integration" "confirmPayment_post" {
+  	rest_api_id = aws_api_gateway_rest_api.main.id
+  	resource_id = aws_api_gateway_resource.customers.id
+  	http_method = aws_api_gateway_method.confirmPayment.http_method
+
+  	integration_http_method = "POST"
+  	type                    = "HTTP_PROXY"
+  	uri                     = "http://${var.LOAD_BALANCER_DNS}/menuguru/v1/customers"
   	passthrough_behavior    = "WHEN_NO_MATCH"
   	content_handling        = "CONVERT_TO_TEXT"
 
