@@ -193,5 +193,5 @@ resource "aws_api_gateway_deployment" "deploy" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   stage_name  = "prod"
   
-  depends_on = [aws_api_gateway_method.proxy, aws_api_gateway_method.customers_post, aws_api_gateway_method.confirmPayment_post]
+  depends_on = [aws_api_gateway_method.proxy, aws_api_gateway_method.customer_post, aws_api_gateway_method.confirmPayment_post]
 }
