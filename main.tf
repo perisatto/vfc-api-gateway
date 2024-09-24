@@ -188,3 +188,17 @@ resource "aws_api_gateway_integration" "confirmPayment_post" {
   	connection_type = "VPC_LINK"
   	connection_id   = aws_api_gateway_vpc_link.main.id
 }
+
+resource "aws_api_gateway_stage" "prod_stage" {
+  stage_name    = "prod"
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  deployment_id = aws_api_gateway_deployment.deploy.id
+}
+
+
+resource "aws_api_gateway_deployment" "deploy" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  stage_name  = aws_api_gateway_stage.prod_stage.stage_name
+  
+  depends_on = [aws_api_gateway_method.proxy, aws_api_gateway_method.customers_post, aws_api_gateway_method.confirmPayment_post]
+}
