@@ -10,7 +10,7 @@ on:
 env:
   TF_CLOUD_ORGANIZATION: "perisatto"
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
-  TF_WORKSPACE: "menuguru-api-gateway"
+  TF_WORKSPACE: "vfc-api-gateway"
   CONFIG_DIRECTORY: "./"  
 
 jobs:
