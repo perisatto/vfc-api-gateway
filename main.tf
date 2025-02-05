@@ -106,7 +106,7 @@ resource "aws_api_gateway_integration" "request_proxy" {
 
   	integration_http_method = "ANY"
   	type                    = "HTTP_PROXY"
-  	uri                     = "http://${var.REQUEST_LOAD_BALANCER_DNS}/{proxy}"
+  	uri                     = "http://${var.REQUEST_LOAD_BALANCER_DNS}/request-manager/v1/users/me/requests/{proxy}"
   	passthrough_behavior    = "WHEN_NO_MATCH"
   	content_handling        = "CONVERT_TO_TEXT"
 
