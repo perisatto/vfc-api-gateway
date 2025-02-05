@@ -122,7 +122,7 @@ resource "aws_api_gateway_rest_api" "user" {
 resource "aws_api_gateway_authorizer" "vfc_user_auth" {
   name                   = "vfc_user_auth"
   rest_api_id            = aws_api_gateway_rest_api.user.id
-  authorizer_uri         = var.AWS_COGNITO_ARN
+  authorizer_uri         = "${var.AWS_COGNITO_ARN}"
   identity_source        = "method.request.header.Authorization"
   provider_arns          = [var.AWS_COGNITO_ARN]
   type                   = "COGNITO_USER_POOLS"
