@@ -80,15 +80,9 @@ resource "aws_api_gateway_resource" "request" {
   	path_part   = "requests"
 }
 
-resource "aws_api_gateway_resource" "request_proxy" {
-  	rest_api_id = aws_api_gateway_rest_api.request.id
-  	parent_id   = aws_api_gateway_resource.request.id
-  	path_part   = "{proxy+}"
-}
-
 resource "aws_api_gateway_method" "request_proxy" {
   	rest_api_id   = aws_api_gateway_rest_api.request.id
-  	resource_id   = aws_api_gateway_resource.request_proxy.id
+  	resource_id   = aws_api_gateway_resource.request.id
   	http_method   = "ANY"
   	authorization = "COGNITO_USER_POOLS"
   	authorizer_id = aws_api_gateway_authorizer.vfc_request_auth.id
@@ -101,12 +95,12 @@ resource "aws_api_gateway_method" "request_proxy" {
 
 resource "aws_api_gateway_integration" "request_proxy" {
   	rest_api_id = aws_api_gateway_rest_api.request.id
-  	resource_id = aws_api_gateway_resource.request_proxy.id
+  	resource_id = aws_api_gateway_resource.request.id
   	http_method = "ANY"
 
   	integration_http_method = "ANY"
   	type                    = "HTTP_PROXY"
-  	uri                     = "http://${var.REQUEST_LOAD_BALANCER_DNS}/request-manager/v1/users/me/requests/{proxy}"
+  	uri                     = "http://${var.REQUEST_LOAD_BALANCER_DNS}/request-manager/v1/users/me/requests"
   	passthrough_behavior    = "WHEN_NO_MATCH"
   	content_handling        = "CONVERT_TO_TEXT"
 
