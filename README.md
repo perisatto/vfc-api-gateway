@@ -1,23 +1,15 @@
-# MenuGuru
+# Video Frame Cut
 
-Este repositório contém os scripts de Terraform para o Api Gateway da aplicação [Menuguru](https://github.com/perisatto/menuguru), que implementa um sistema fictício de gestão de pedidos para restaurantes como parte do trabalho de avaliação do curso de Pós Graduação em Software Architecture da FIAP.
+Este repositÃ³rio contÃ©m os scripts de Terraform para o Api Gateway da aplicaÃ§Ã£o Video Frame Cut.
 
-O MenuGuru tem como objetivo principal registrar e acompanhar o status de pedidos para restaurantes, onde o cliente pode realizar seu pedido e acompanhar o status do mesmo até a retirada.
+# Guia para execuÃ§Ã£o do projeto
 
-Funcionalidades:
-* Cadastro e Identificação de Clientes
-* Gestão de Produtos (criação, consulta, edição e remoção)
-* Gestão de Pedidos (solicitação, consulta e finalização de pedidos)
-* Integração com Mercado Pago para processamento dos pagamentos
-
-# Guia para execução do projeto
-
-## Pré-Requisitos
+## PrÃ©-Requisitos
 
 * Terraform CLI
 * AWS CLI
 
-## Execução
+## ExecuÃ§Ã£o
 
 1. Execute o comando para inicializar o Terraform
 
@@ -25,13 +17,13 @@ Funcionalidades:
 $ terraform init
 ```
 
-2. Execute o comando para validação dos scripts
+2. Execute o comando para validaÃ§Ã£o dos scripts
 
 ``` bash
 $ terraform validate
 ```
 
-3. Execute o comando para aplicar as alterações
+3. Execute o comando para aplicar as alteraÃ§Ãµes
 
 ``` bash
 $ terraform apply
